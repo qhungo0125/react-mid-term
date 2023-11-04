@@ -1,0 +1,18 @@
+{
+    "version": 2,
+    "builds": [{ "src": "vite.config.js", "use": "@vercel/node" }],
+    "routes": [{ "src": "/(.*)", "dest": "/$1" }],
+    "cleanUrls": true,
+    "trailingSlash": true,
+    "regions": ["vn"],
+    "env": {
+      "VITE_ENV": "production"
+    },
+    "github": {
+      "silent": true
+    },
+    "git": {
+      "branch": "main"
+    }
+  }
+  
