@@ -1,10 +1,13 @@
 import { TextField } from '@mui/material';
 
-function SInput({ label }) {
+function SInput({ label, value, onInputChange, type='text' }) {
     return (
         <TextField
             size='small'
             label={label}
+            value={value}
+            onChange={onInputChange}
+            type={type}
             variant="outlined"
             sx={{
                 "& .MuiInputBase-root": {

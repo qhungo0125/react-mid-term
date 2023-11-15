@@ -1,9 +1,9 @@
-import SInput from '../Components/SInput'
-import SButton from '../Components/SButton'
+import SInput from '../../components/Custom/SInput'
+import SButton from '../../components/Custom/SButton'
 import "./styles.css"
 import "../Login/styles.css"
 import { Box, Link } from '@mui/material';
-import {Apple, Google} from "@mui/icons-material"
+import {Apple, Email, Google, Password} from "@mui/icons-material"
 
 
 const styles = {
@@ -31,7 +31,7 @@ const styles = {
     }
 }
 
-function Login() {
+function Register({Name, Email, Password, onNameChange, onEmailChange, onPasswordChange, onRegister}) {
     return (
         <div className="login_background">
             <div className="login_wrapper">
@@ -47,16 +47,16 @@ function Login() {
                 >
                     <h2 style={{ textAlign: 'center' }}>Create account</h2>
                     <SInput
-                        label={"Name"}
+                        label={"Name"} value={Name} onInputChange={onNameChange}
                     />
                     <SInput
-                        label={"Email"}
+                        label={"Email"} value={Email} onInputChange={onEmailChange}
                     />
                     <SInput
-                        label={"Password"}
+                        label={"Password"} type={'password'} value={Password} onInputChange={onPasswordChange}
                     />
                     <div style={{ marginTop: '10px', fontSize: '12px' }}>
-                        <SButton styles={styles.signup} />
+                        <SButton styles={styles.signup} onButtonClick={onRegister} />
                     </div>
                     <div style={{ marginTop: '10px', textAlign: 'left', fontSize: '10px', color: '#acacab' }}>
                         Already have an account? &nbsp;
@@ -79,4 +79,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default Register;

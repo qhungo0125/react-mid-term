@@ -1,9 +1,10 @@
 import { Button, Icon } from '@mui/material';
 
-function SButton({styles}) {
+function SButton({styles, onButtonClick}) {
     return (
         <Button
             variant="contained"
+            onClick={onButtonClick}
             sx={{
                 backgroundColor: styles.bgColor,
                 borderRadius: '20px',
