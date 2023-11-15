@@ -1,8 +1,8 @@
-import SInput from '../Components/SInput'
-import SButton from '../Components/SButton'
+import SInput from '../../components/LoginInput'
+import SButton from '../../components/LoginButtons'
 import "./styles.css"
-import { Box, Link } from '@mui/material';
-import {Apple, Google} from "@mui/icons-material"
+import { Box, Container, Link } from '@mui/material';
+import { Apple, Google } from "@mui/icons-material"
 
 
 const styles = {
@@ -10,8 +10,8 @@ const styles = {
         text: "Log in",
         bgColor: "#187b87",
         hoverColor: "#609aa5",
-        color:"#fff",
-        icon:""
+        color: "#fff",
+        icon: ""
     },
 
     login_w_gg: {
@@ -19,13 +19,13 @@ const styles = {
         bgColor: "#fff",
         hoverColor: "#e6e6e6",
         color: "#000000",
-        icon: <Google fontSize='inherit'/>
+        icon: <Google fontSize='inherit' />
     },
     login_w_apple: {
         text: "Log in with Apple",
         bgColor: "#000000",
         hoverColor: "#333333",
-        color:"#fff",
+        color: "#fff",
         icon: <Apple fontSize='inherit' />
     }
 }
@@ -39,6 +39,7 @@ function Login() {
                     component="form"
                     sx={{
                         '& .MuiTextField-root': { marginBlock: 1 },
+                        width: { xs: '100%', md: '50%' }
                     }}
                     noValidate
                     autoComplete="off"
@@ -51,30 +52,30 @@ function Login() {
                     <SInput
                         label={"Password"}
                     />
-                    <div style={{ textAlign: 'right' }}>
+                    <Box sx={{ textAlign: 'right' }}>
                         <Link href="#" color="inherit" sx={{ fontSize: '10px' }}>
                             Forgot Password?
                         </Link>
-                    </div>
-                    <div style={{ marginTop: '30px', fontSize: '12px' }}>
+                    </Box>
+                    <Box style={{ marginTop: '30px', fontSize: '12px' }}>
                         <SButton styles={styles.login_btn} />
-                    </div>
-                    <div style={{ marginTop: '10px', textAlign: 'left', fontSize: '10px', color: '#acacab' }}>
+                    </Box>
+                    <Box sx={{ mt: '10px', textAlign: 'left', fontSize: '10px', color: '#acacab' }}>
                         Don't have an account? &nbsp;
                         <Link href="#" color="#187b87" fontSize={'10px'} fontWeight={'500'}>
                             Sign up
                         </Link>
-                    </div>
-                    <div style={{ marginTop: '30px', fontSize: '11px' }}>
+                    </Box>
+                    <Box sx={{ mt: '30px', fontSize: '11px' }}>
                         <SButton styles={styles.login_w_apple} />
-                    </div>
-                    <div style={{ marginTop: '10px', fontSize: '11px' }}>
-                        <SButton styles={styles.login_w_gg}/>
-                    </div>
+                    </Box>
+                    <Box sx={{ mt: '10px', fontSize: '11px' }}>
+                        <SButton styles={styles.login_w_gg} />
+                    </Box>
                 </Box>
-                <div className="login_image">
+                <Box sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }} className="login_image">
                     <img src="./login_bg.jpg" />
-                </div>
+                </Box>
             </div>
         </div>
     );
