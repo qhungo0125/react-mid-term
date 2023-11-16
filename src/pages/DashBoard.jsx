@@ -1,4 +1,9 @@
 import React from 'react';
+import dayjs from 'dayjs';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import {
   Box,
   Button,
@@ -29,36 +34,59 @@ import { formatPhoneNumber } from '../utils/format';
 import axios from 'axios'
 import useSWR from 'swr'
 
+const ACCESS_TOKEN = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NTVlYzdhMjAxMDlhNDgzMTllNjViZSIsImVtYWlsIjoic29uZ29oYW5AZ21haWwuY29tIiwiaWF0IjoxNzAwMTYyMTc2LCJleHAiOjE3MDAxNjMwNzZ9.ic707y1Z3-bim9F573odF-UEaTDDiDKhV6om_-DSHNg`
 
+const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
 export const DashBoard = () => {
-  // const fetcher = async (url) => await axios.get(url).then(res => res.data)
-  // const user_id = "654854dc975add0b8fc17c4f"
-  // const { data, success } = useSWR(`http://react-mid-term.onrender.com/api/user/${user_id}`, fetcher)
 
-  // console.log(data)
+  const fetcher = (url) => axios.get(url).then(res => res.data)
+  const user_id = "6555ec7a20109a48319e65be"
+  const { data } = useSWR(`https://react-mid-term.onrender.com/api/user/${user_id}`, fetcher, { refreshInterval: 0 })
 
-  const [firstName, setFirstName] = React.useState(data.first_name)
-  const [lastName, setLastName] = React.useState(data.last_name)
-  const [region, setRegion] = React.useState(data.region)
-  const [phone, setPhone] = React.useState(data.telephone)
-  const [email, setEmail] = React.useState(data.email)
-  const [pass, setPass] = React.useState(data.password)
-  const [gender, setGender] = React.useState(data.sex)
-  const [year, setYear] = React.useState("2000")
-  const [month, setMonth] = React.useState("1")
-  const [day, setDay] = React.useState("1")
-
+  console.log(data.data)
+  const info = data ? data.data : null;
 
   const [showPassword, setShowPassword] = React.useState(false);
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  if(error){return <div>error</div>}
-  if(isLoading){return <div>loading</div>}
+  if (info) {
+    const [firstName, setFirstName] = React.useState(info.first_name)
+    const [lastName, setLastName] = React.useState(info.last_name)
+    const [region, setRegion] = React.useState(info.region)
+    const [phone, setPhone] = React.useState(info.telephone)
+    const [email, setEmail] = React.useState(info.email)
+    const [pass, setPass] = React.useState(info.password)
+    const [gender, setGender] = React.useState(info.sex)
+    const [dob, setDOB] = React.useState(info.DOB)
 
-  if (success) {
+    const handleSaveChanges = () => {
+      axios({
+        method: 'put',
+        url: `https://react-mid-term.onrender.com/api/user/update`,
+        headers: {
+          Authorization: `Bearer ${ACCESS_TOKEN}`
+        },
+        data: {
+          first_name: firstName,
+          last_name: lastName,
+          email: email,
+          sex: gender,
+          telephone: phone,
+          DOB: dob,
+          region: region
+        }
+      })
+        .then((respone) => {
+          console.log(respone)
+          alert("Update successful.")
+        }, (error) => {
+          console.log(error)
+          alert("Update failed.")
+        });
+    }
 
     return (
       <Grid width={'100%'} container spacing={2} sx={{ mt: 2 }}>
@@ -159,40 +187,26 @@ export const DashBoard = () => {
               value={gender}
               onChange={e => setGender(e.target.value)}
             >
-              <FormControlLabel value="female" control={<Radio />} label="Female" />
-              <FormControlLabel value="male" control={<Radio />} label="Male" />
+              <FormControlLabel value="Female" control={<Radio />} label="Female" />
+              <FormControlLabel value="Male" control={<Radio />} label="Male" />
             </RadioGroup>
           </FormControl>
         </Grid>
 
         <Grid item xs={12} sm={12} md={6}>
-          <FormControl fullWidth>
-            <FormLabel>Date of birth</FormLabel>
-
-            <Grid container spacing={1}>
-              <Grid item xs={3}>
-                <TextField variant="outlined" value={year} onChange={e => setYear(e.target.value)} />
-              </Grid>
-              <Grid item xs={6}>
-                <FormControl fullWidth>
-                  <Select
-                    value={month}
-                    onChange={e => setMonth(e.target.value)}
-                  >
-                    <MenuItem value={'1'}>January</MenuItem>
-                    <MenuItem value={'2'}>February</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={3}>
-                <TextField variant="outlined" value={day} onChange={e => setDay(e.target.value)} />
-              </Grid>
-            </Grid>
-          </FormControl>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={['DatePicker']}>
+              <DatePicker
+                label="Date of birth"
+                value={dayjs(dob)}
+                onChange={(newValue) => setDOB(newValue)}
+              />
+            </DemoContainer>
+          </LocalizationProvider>
         </Grid>
 
         <Grid item sm={12} textAlign={'center'} sx={{ mt: 2 }}>
-          <Button variant="contained">Save Changes</Button>
+          <Button variant="contained" onClick={handleSaveChanges}>Save Changes</Button>
         </Grid>
       </Grid>
     );
