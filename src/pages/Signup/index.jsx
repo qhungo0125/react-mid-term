@@ -1,5 +1,5 @@
-import SInput from '../Components/SInput'
-import SButton from '../Components/SButton'
+import SInput from '../../components/LoginInput'
+import SButton from '../../components/LoginButtons'
 import "./styles.css"
 import "../Login/styles.css"
 import { Box, Link } from '@mui/material';

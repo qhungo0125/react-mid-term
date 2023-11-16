@@ -3,14 +3,18 @@ import { DashBoard } from './pages/DashBoard';
 // import ResponsiveDrawer from './components/Drawer';
 import React from 'react';
 import Login from './pages/Login';
+import Signup from './pages/Signup';
 import ResponsiveDrawer from './components/Drawer';
 import { Container } from '@mui/material';
 // import ResponsiveDrawer from './components/test';
 
 function App() {
-  const [page, setPage] = React.useState(-1);
+  const [page, setPage] = React.useState(0);
   let ele = <Login />;
   switch (page) {
+    case -2:
+      ele = <Signup />;
+      break;
     case -1:
       ele = <Login />;
       break;
