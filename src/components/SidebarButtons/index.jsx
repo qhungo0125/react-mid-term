@@ -2,7 +2,7 @@ import { Box, Button, ListItem, ListItemText } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-const SidebarButtons = () => {
+const SidebarButtons = ({ onLogout }) => {
   return (
     <>
       <Box>
@@ -28,7 +28,7 @@ const SidebarButtons = () => {
         fullWidth
         variant="contained"
         key={'Logout'}
-        // onClick={() => changeTag(index)}
+        // onClick={onLogout}
         sx={{
           borderRadius: 4,
         }}
