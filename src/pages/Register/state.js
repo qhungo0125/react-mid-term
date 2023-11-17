@@ -13,42 +13,71 @@ async function postRequest(url, { arg }) {
 }
 
 export default function useRegisterState() {
-  const { data, trigger } = useSWRMutation('/user/auth/login', postRequest);
+  const { data, trigger } = useSWRMutation('/user/auth/register', postRequest);
 
-  const [name, setName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [formData, setFormData] = React.useState({
+    name: '',
+    email: '',
+    password: '',
+  });
 
-  const [nameError, setNameError] = React.useState('');
-  const [emailError, setEmailError] = React.useState('');
-  const [passError, setPassError] = React.useState('');
+  const [errors, setErrors] = React.useState({
+    name: '',
+    email: '',
+    password: '',
+  });
+
+  const handleDataChange = ({ key, value }) => {
+    setFormData((data) => ({
+      ...data,
+      [key]: value,
+    }));
+    setErrors((data) => ({
+      ...data,
+      [key]: '',
+    }));
+  };
 
   const handleNameChange = (e) => {
-    setName(e.target.value);
-    setNameError('');
+    handleDataChange({ key: 'name', value: e.target.value });
   };
 
   const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-    setEmailError('');
+    handleDataChange({ key: 'email', value: e.target.value });
   };
+
   const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-    setPassError('');
+    handleDataChange({ key: 'password', value: e.target.value });
   };
 
   const handleRegister = async () => {
+    const { name, email, password } = formData;
     try {
       //validation
       if (!name || !email || !password) {
         // Validate if fields are empty
-        setNameError(name ? '' : 'Name is required');
-        setEmailError(email ? '' : 'Email is required');
-        setPassError(password ? '' : 'Password is required');
+        !name &&
+          setErrors((data) => ({
+            ...data,
+            name: 'Name is required',
+          }));
+        !email &&
+          setErrors((data) => ({
+            ...data,
+            email: 'Email is required',
+          }));
+        !password &&
+          setErrors((data) => ({
+            ...data,
+            password: 'Password is required',
+          }));
         return;
       }
       if (!validateEmail(email)) {
-        setEmailError('Please enter a valid email');
+        setErrors((data) => ({
+          ...data,
+          email: 'Please enter a valid email',
+        }));
         return;
       }
       // trigger to registration
@@ -63,17 +92,16 @@ export default function useRegisterState() {
       // redirect to dashboard
       // handle code here
     } catch (error) {
-      setEmailError(error.response.data.error.message);
+      setErrors((data) => ({
+        ...data,
+        email: error.response.data.error.message,
+      }));
     }
   };
 
   return {
-    nameError,
-    emailError,
-    passError,
-    name,
-    email,
-    password,
+    formData,
+    errors,
     handleEmailChange,
     handleNameChange,
     handlePasswordChange,

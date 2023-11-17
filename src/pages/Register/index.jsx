@@ -33,17 +33,16 @@ const styles = {
 
 function Register() {
   const {
-    nameError,
-    emailError,
-    passError,
-    name,
-    email,
-    password,
+    formData,
+    errors,
     handleEmailChange,
     handleNameChange,
     handlePasswordChange,
     handleRegister,
   } = useRegisterState();
+
+  const { name, email, password } = formData;
+  const { name: nameError, email: emailError, password: passError } = errors;
 
   return (
     <div className="login_background">
