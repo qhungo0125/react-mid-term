@@ -17,6 +17,10 @@ function ResponsiveDrawer(props) {
     setMobileOpen(!mobileOpen);
   };
 
+  // const handleLogout = () => {
+  //   localStorage.clear();
+  // };
+
   // const changeTag = (index) => {
   //   setPage(index);
   // };
@@ -57,7 +61,7 @@ function ResponsiveDrawer(props) {
           drawerWidth={drawerWidth}
           mobileOpen={mobileOpen}
         />
-        {/* <SidebarButtons /> */}
+        {/* <SidebarButtons onLogout={handleLogout} /> */}
       </Box>
       {props.children}
     </Box>
