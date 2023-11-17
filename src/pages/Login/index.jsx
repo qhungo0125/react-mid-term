@@ -3,6 +3,7 @@ import SButton from '../../components/Custom/SButton';
 import './styles.css';
 import { Box, Link } from '@mui/material';
 import { Apple, Google } from '@mui/icons-material';
+import { useLogin } from './state';
 
 const styles = {
   login_btn: {
@@ -29,15 +30,18 @@ const styles = {
   },
 };
 
-function Login({
-  Email,
-  Password,
-  onEmailChange,
-  onPasswordChange,
-  onLogin,
-  emailError,
-  passError,
-}) {
+function Login() {
+  const {
+    formData,
+    errors,
+    handleEmailChange,
+    handlePasswordChange,
+    handleLogin,
+  } = useLogin();
+
+  const { email, password } = formData;
+  const { email: emailError, password: passwordError } = errors;
+
   return (
     <div className="login_background">
       <div className="login_wrapper">
@@ -51,18 +55,22 @@ function Login({
           autoComplete="off"
         >
           <h2 style={{ textAlign: 'center' }}>Welcome back</h2>
-          <SInput label={'Email'} value={Email} onInputChange={onEmailChange} />
+          <SInput
+            label={'Email'}
+            value={email}
+            onInputChange={handleEmailChange}
+          />
           <span style={{ color: 'red', fontSize: '12px', marginLeft: '15px' }}>
             {emailError}
           </span>
           <SInput
             label={'Password'}
             type={'password'}
-            value={Password}
-            onInputChange={onPasswordChange}
+            value={password}
+            onInputChange={handlePasswordChange}
           />
           <span style={{ color: 'red', fontSize: '12px', marginLeft: '15px' }}>
-            {passError}
+            {passwordError}
           </span>
           <div style={{ textAlign: 'right' }}>
             <Link href="#" color="inherit" sx={{ fontSize: '10px' }}>
@@ -70,7 +78,7 @@ function Login({
             </Link>
           </div>
           <div style={{ marginTop: '30px', fontSize: '12px' }}>
-            <SButton styles={styles.login_btn} onButtonClick={onLogin} />
+            <SButton styles={styles.login_btn} onButtonClick={handleLogin} />
           </div>
           <div
             style={{
