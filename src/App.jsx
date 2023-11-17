@@ -16,20 +16,14 @@ async function postRequest(url, { arg }) {
 }
 
 function App() {
-  const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [nameError, setNameError] = React.useState('');
   const [emailError, setEmailError] = React.useState('');
   const [passError, setPassError] = React.useState('');
   // register
   // const { data, trigger } = useSWRMutation('/user/auth/register', postRequest);
   // login
   const { data, trigger } = useSWRMutation('/user/auth/login', postRequest);
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-    setNameError('');
-  };
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
     setEmailError('');
@@ -42,12 +36,12 @@ function App() {
     const res = /\S+@\S+\.\S+/;
     return res.test(String(email).toLowerCase());
   };
-  // const handleRegister = async () => {
+
+  // const handleLogin = async () => {
   //   try {
   //     //validation
-  //     if (!name || !email || !password) {
+  //     if (!email || !password) {
   //       // Validate if fields are empty
-  //       setNameError(name ? '' : 'Name is required');
   //       setEmailError(email ? '' : 'Email is required');
   //       setPassError(password ? '' : 'Password is required');
   //       return;
@@ -58,62 +52,23 @@ function App() {
   //     }
   //     // trigger to registration
   //     const res = await trigger({
-  //       first_name: name,
   //       email: email,
   //       password: password,
   //     });
   //     // save token to local storage
   //     localStorage.setItem('token', res.headers['authorization']);
-  //     alert('register successfully');
+  //     alert('login successfully');
   //     // redirect to dashboard
   //     // handle code here
   //   } catch (error) {
   //     setEmailError(error.response.data.error.message);
   //   }
+  //   const handleLogout = () => {};
   // };
-  const handleLogin = async () => {
-    try {
-      //validation
-      if (!email || !password) {
-        // Validate if fields are empty
-        setEmailError(email ? '' : 'Email is required');
-        setPassError(password ? '' : 'Password is required');
-        return;
-      }
-      if (!validateEmail(email)) {
-        setEmailError('Please enter a valid email');
-        return;
-      }
-      // trigger to registration
-      const res = await trigger({
-        email: email,
-        password: password,
-      });
-      // save token to local storage
-      localStorage.setItem('token', res.headers['authorization']);
-      alert('login successfully');
-      // redirect to dashboard
-      // handle code here
-    } catch (error) {
-      setEmailError(error.response.data.error.message);
-    }
-    const handleLogout = () => {};
-  };
   return (
     <>
-      {/* <Register
-        Name={name}
-        Email={email}
-        Password={password}
-        onNameChange={handleNameChange}
-        onEmailChange={handleEmailChange}
-        onPasswordChange={handlePasswordChange}
-        onRegister={handleRegister}
-        nameError={nameError}
-        emailError={emailError}
-        passError={passError}
-      /> */}
-      <Login
+      <Register />
+      {/* <Login
         Email={email}
         Password={password}
         onEmailChange={handleEmailChange}
@@ -121,7 +76,7 @@ function App() {
         onLogin={handleLogin}
         emailError={emailError}
         passError={passError}
-      />
+      /> */}
       {/* <Container
         sx={{
           background: '#ebcfcc',

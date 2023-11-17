@@ -4,6 +4,7 @@ import './styles.css';
 import '../Login/styles.css';
 import { Box, Link } from '@mui/material';
 import { Apple, Email, Google, Password } from '@mui/icons-material';
+import useRegisterState from './state';
 
 const styles = {
   signup: {
@@ -30,18 +31,20 @@ const styles = {
   },
 };
 
-function Register({
-  Name,
-  Email,
-  Password,
-  onNameChange,
-  onEmailChange,
-  onPasswordChange,
-  onRegister,
-  nameError,
-  emailError,
-  passError,
-}) {
+function Register() {
+  const {
+    nameError,
+    emailError,
+    passError,
+    name,
+    email,
+    password,
+    handleEmailChange,
+    handleNameChange,
+    handlePasswordChange,
+    handleRegister,
+  } = useRegisterState();
+
   return (
     <div className="login_background">
       <div className="login_wrapper">
@@ -55,25 +58,33 @@ function Register({
           autoComplete="off"
         >
           <h2 style={{ textAlign: 'center' }}>Create account</h2>
-          <SInput label={'Name'} value={Name} onInputChange={onNameChange} />
+          <SInput
+            label={'Name'}
+            value={name}
+            onInputChange={handleNameChange}
+          />
           <span style={{ color: 'red', fontSize: '12px', marginLeft: '15px' }}>
             {nameError}
           </span>
-          <SInput label={'Email'} value={Email} onInputChange={onEmailChange} />
+          <SInput
+            label={'Email'}
+            value={email}
+            onInputChange={handleEmailChange}
+          />
           <span style={{ color: 'red', fontSize: '12px', marginLeft: '15px' }}>
             {emailError}
           </span>
           <SInput
             label={'Password'}
             type={'password'}
-            value={Password}
-            onInputChange={onPasswordChange}
+            value={password}
+            onInputChange={handlePasswordChange}
           />
           <span style={{ color: 'red', fontSize: '12px', marginLeft: '15px' }}>
             {passError}
           </span>
           <div style={{ marginTop: '10px', fontSize: '12px' }}>
-            <SButton styles={styles.signup} onButtonClick={onRegister} />
+            <SButton styles={styles.signup} onButtonClick={handleRegister} />
           </div>
           <div
             style={{
