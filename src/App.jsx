@@ -1,19 +1,11 @@
 import React from 'react';
 import { Container } from '@mui/material';
-import useSWR from 'swr';
-import useSWRMutation from 'swr/mutation';
 
 import './App.css';
 import { DashBoard } from './pages/DashBoard';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ResponsiveDrawer from './components/Drawer';
-import axios from './utils/axiosConfig';
-
-async function postRequest(url, { arg }) {
-  const response = await axios.post(url, arg);
-  return response;
-}
 
 function App() {
   return (
