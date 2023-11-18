@@ -9,8 +9,8 @@ import NotFound from './components/NotFound';
 const router = createBrowserRouter([
   { path: '/login', Component: () => <Login /> },
   { path: '/register', Component: () => <Register /> },
-  { path: '/', Component: () => <Home /> },
-  // { path: '/', Component: () => <Login /> },
+  // { path: '/', Component: () => <Home /> },
+  { path: '/', Component: () => <Login /> },
   { path: '/dashboard', Component: () => <Page /> },
   { path: '*', Component: () => <NotFound /> },
 ]);
