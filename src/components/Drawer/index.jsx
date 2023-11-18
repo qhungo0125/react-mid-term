@@ -16,14 +16,6 @@ function ResponsiveDrawer(props) {
     setMobileOpen(!mobileOpen);
   };
 
-  // const handleLogout = () => {
-  //   localStorage.clear();
-  // };
-
-  // const changeTag = (index) => {
-  //   setPage(index);
-  // };
-
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />

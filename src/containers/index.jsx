@@ -35,7 +35,6 @@ const Page = () => {
       }
     </Container>
   );
-  // <ResponsiveDrawer />
 };
 
 export default Page;
