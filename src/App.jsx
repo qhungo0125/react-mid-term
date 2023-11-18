@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container } from '@mui/material';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import './App.css';
 import Login from './containers/Login/index';
@@ -14,40 +15,11 @@ const router = createBrowserRouter([
 ]);
 
 function Home() {
-  return (
-    <Container
-      sx={{
-        margin: 0,
-        border: 'none',
-        width: '100%',
-        '&.MuiContainer-root': {
-          maxWidth: '100%',
-          padding: 0,
-        },
-      }}
-    >
-      {page == 0 ? (
-        <ResponsiveDrawer setPage={setPage}>
-          <Container
-            sx={{
-              mt: { xs: 6, sm: 0 },
-              background: 'white',
-              borderRadius: 4,
-              paddingY: 2,
-              '&.MuiContainer-root': {
-                maxWidth: '100%',
-              },
-            }}
-          >
-            <DashBoard />
-          </Container>
-        </ResponsiveDrawer>
-      ) : (
-        <div>{ele}</div>
-      )}
-    </Container>
-    // <ResponsiveDrawer />
-  );
+  return <h1> Home page</h1>;
+}
+
+function App() {
+  return <RouterProvider router={router} />;
 }
 
 export default App;
