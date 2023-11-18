@@ -1,8 +1,16 @@
 import { Box, Button, ListItem, ListItemText } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useNavigate } from 'react-router-dom';
 
-const SidebarButtons = ({ onLogout }) => {
+const SidebarButtons = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userid');
+    navigate('/login');
+  };
   return (
     <>
       <Box>
@@ -28,7 +36,7 @@ const SidebarButtons = ({ onLogout }) => {
         fullWidth
         variant="contained"
         key={'Logout'}
-        // onClick={onLogout}
+        onClick={() => handleLogout()}
         sx={{
           borderRadius: 4,
         }}

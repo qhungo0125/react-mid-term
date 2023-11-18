@@ -1,8 +1,10 @@
 import React from 'react';
 import { postRequest, validateEmail } from '../Register/state';
 import useSWRMutation from 'swr/mutation';
+import { useNavigate } from 'react-router-dom';
 
 export function useLogin() {
+  const navigate = useNavigate();
   const { data, trigger } = useSWRMutation('/user/auth/login', postRequest);
 
   const [formData, setFormData] = React.useState({
@@ -65,15 +67,13 @@ export function useLogin() {
         email: email,
         password: password,
       });
-      console.log('res ', res);
       // save token to local storage
-      if (res && res.data) {
-        // @todo
-        // update api response and remove this hardcode
-        const { data: token, userId = '655844e5208af61b667793b9' } = res.data;
+      if (res && res.data && res.data.data) {
+        const { token, _id: userId } = res.data.data;
         localStorage.setItem('token', token);
         localStorage.setItem('userid', userId);
         alert('login successfully');
+        navigate('/dashboard');
       }
     } catch (error) {
       localStorage.removeItem('token');
@@ -83,7 +83,6 @@ export function useLogin() {
         email: error.response.data.error.message,
       }));
     }
-    const handleLogout = () => {};
   };
 
   return {
