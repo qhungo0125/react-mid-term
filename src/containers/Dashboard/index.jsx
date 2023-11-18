@@ -5,6 +5,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import {
+  Backdrop,
   Box,
   Button,
   Container,
@@ -33,17 +34,29 @@ import {
 import { formatPhoneNumber } from '../../utils/format';
 import { useNavigate } from 'react-router-dom';
 import axios from '../../utils/axiosConfig';
+import Loader from "../../components/Loader"
 
 const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 export const DashBoard = () => {
-  const [isLoading, setLoading] = React.useState();
+  const [isLoading, setLoading] = React.useState(true);
   const navigate = useNavigate();
 
+  //info fields
+  const [firstName, setFirstName] = React.useState('');
+  const [lastName, setLastName] = React.useState('');
+  const [region, setRegion] = React.useState('');
+  const [phone, setPhone] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [pass, setPass] = React.useState('');
+  const [gender, setGender] = React.useState('');
+  const [dob, setDOB] = React.useState('');
+
+  //fetch data
   React.useEffect(() => {
+    setLoading(true);
     const userId = localStorage.getItem('userid');
     const getData = async (userId) => {
-      setLoading(true);
       const responseData = await axios.get(`/user/${userId}`);
       if (responseData) {
         const {
@@ -65,10 +78,12 @@ export const DashBoard = () => {
         setPass(password);
         setGender(sex);
         setDOB(DOB);
+
+        setLoading(false);
+        console.log(responseData);
       }
-      setLoading(false);
-      console.log(responseData);
     };
+
     if (userId) {
       getData(userId);
     } else {
@@ -77,25 +92,27 @@ export const DashBoard = () => {
     }
   }, []);
 
-  const [firstName, setFirstName] = React.useState();
-  const [lastName, setLastName] = React.useState();
-  const [region, setRegion] = React.useState();
-  const [phone, setPhone] = React.useState();
-  const [email, setEmail] = React.useState();
-  const [pass, setPass] = React.useState();
-  const [gender, setGender] = React.useState();
-  const [dob, setDOB] = React.useState();
 
+  //show password
   const [showPassword, setShowPassword] = React.useState(false);
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  if (isLoading) {
-    return <>Loading</>;
-  }
+  console.log(isLoading)
 
+  //handle loading
+  // if (isLoading) {
+  //   return (
+  //     <Box sx={{ backgroundColor: 'black', zIndex: '5', position:'fixed' }}>
+  //       <Loader />
+  //     </Box>
+  //   )
+  // }
+
+  //save changes
   const handleSaveChanges = () => {
+    setLoading(true)
     axios({
       method: 'put',
       url: `https://react-mid-term.onrender.com/api/user/update`,
@@ -114,10 +131,12 @@ export const DashBoard = () => {
     }).then(
       (respone) => {
         console.log(respone);
+        setLoading(false)
         alert('Update successful.');
       },
       (error) => {
         console.log(error);
+        setLoading(false)
         alert('Update failed.');
       },
     );
@@ -125,6 +144,7 @@ export const DashBoard = () => {
 
   return (
     <Grid width={'100%'} container spacing={2} sx={{ mt: 2 }}>
+      <Loader open={isLoading}/>
       <Grid container alignItems="center" justifyContent="center">
         <Grid item xs={12} textAlign={'center'}>
           <img
@@ -249,6 +269,7 @@ export const DashBoard = () => {
           Save Changes
         </Button>
       </Grid>
+      
     </Grid>
   );
 };
