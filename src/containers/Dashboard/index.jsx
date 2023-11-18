@@ -37,9 +37,9 @@ import useSWR from 'swr';
 const ACCESS_TOKEN = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NTVlYzdhMjAxMDlhNDgzMTllNjViZSIsImVtYWlsIjoic29uZ29oYW5AZ21haWwuY29tIiwiaWF0IjoxNzAwMTYyMTc2LCJleHAiOjE3MDAxNjMwNzZ9.ic707y1Z3-bim9F573odF-UEaTDDiDKhV6om_-DSHNg`;
 
 const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 export const DashBoard = () => {
-  const fetcher = (url) => axios.get(url).then((res) => res.data);
   const user_id = '6555ec7a20109a48319e65be';
   const { data } = useSWR(
     `https://react-mid-term.onrender.com/api/user/${user_id}`,
@@ -47,8 +47,17 @@ export const DashBoard = () => {
     { refreshInterval: 0 },
   );
 
-  console.log(data.data);
   const info = data ? data.data : null;
+  const {
+    first_name: firstName,
+    last_name: lastName,
+    region,
+    telephone: phone,
+    email,
+    password: pass,
+    sex: gender,
+    DOB: dob,
+  } = info;
 
   const [showPassword, setShowPassword] = React.useState(false);
   const handleTogglePasswordVisibility = () => {
@@ -56,15 +65,6 @@ export const DashBoard = () => {
   };
 
   if (info) {
-    const [firstName, setFirstName] = React.useState(info.first_name);
-    const [lastName, setLastName] = React.useState(info.last_name);
-    const [region, setRegion] = React.useState(info.region);
-    const [phone, setPhone] = React.useState(info.telephone);
-    const [email, setEmail] = React.useState(info.email);
-    const [pass, setPass] = React.useState(info.password);
-    const [gender, setGender] = React.useState(info.sex);
-    const [dob, setDOB] = React.useState(info.DOB);
-
     const handleSaveChanges = () => {
       axios({
         method: 'put',

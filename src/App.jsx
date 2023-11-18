@@ -2,9 +2,9 @@ import React from 'react';
 import { createBrowserRouter, Link, RouterProvider } from 'react-router-dom';
 // import { Container } from '@mui/material';
 import './App.css';
-import Login from './pages/Login/index';
-import Register from './pages/Register/index';
-import Page from './pages/index';
+import Login from './containers/Login/index';
+import Register from './containers/Register/index';
+import Page from './containers/index';
 
 const router = createBrowserRouter([
   { path: '/login', Component: () => <Login /> },
