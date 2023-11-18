@@ -31,6 +31,7 @@ const styles = {
 };
 
 function Login() {
+  console.log('render login page');
   const {
     formData,
     errors,
