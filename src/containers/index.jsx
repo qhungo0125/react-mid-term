@@ -1,19 +1,9 @@
 import React from 'react';
+import ResponsiveDrawer from '../components/Drawer';
 import { Container } from '@mui/material';
+import { DashBoard } from './Dashboard';
 
-import './App.css';
-import Login from './containers/Login/index';
-import Register from './containers/Register/index';
-import Page from './containers/index';
-
-const router = createBrowserRouter([
-  { path: '/', Component: Home },
-  { path: '/login', Component: () => <Login /> },
-  { path: '/register', Component: () => <Register /> },
-  { path: '/dashboard', Component: () => <Page /> },
-]);
-
-function Home() {
+const Page = () => {
   return (
     <Container
       sx={{
@@ -26,8 +16,8 @@ function Home() {
         },
       }}
     >
-      {page == 0 ? (
-        <ResponsiveDrawer setPage={setPage}>
+      {
+        <ResponsiveDrawer>
           <Container
             sx={{
               mt: { xs: 6, sm: 0 },
@@ -42,12 +32,10 @@ function Home() {
             <DashBoard />
           </Container>
         </ResponsiveDrawer>
-      ) : (
-        <div>{ele}</div>
-      )}
+      }
     </Container>
-    // <ResponsiveDrawer />
   );
-}
+  // <ResponsiveDrawer />
+};
 
-export default App;
+export default Page;
