@@ -19,6 +19,9 @@ function Home() {
   return (
     <>
       <h1>Welcome!</h1>
+      <Link to={'/login'}>login</Link>
+      <Link to={'/register'}>register</Link>
+      <Link to={'/dashboard'}>dashboard</Link>
     </>
   );
 }
