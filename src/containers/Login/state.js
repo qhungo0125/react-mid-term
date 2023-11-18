@@ -1,28 +1,18 @@
 import React from 'react';
+import { postRequest, validateEmail } from '../Register/state';
 import useSWRMutation from 'swr/mutation';
-import axios from '../../utils/axiosConfig';
+import { useNavigate } from 'react-router-dom';
 
-export const validateEmail = (email) => {
-  const res = /\S+@\S+\.\S+/;
-  return res.test(String(email).toLowerCase());
-};
-
-export async function postRequest(url, { arg }) {
-  const response = await axios.post(url, arg);
-  return response;
-}
-
-export default function useRegisterState() {
-  const { data, trigger } = useSWRMutation('/user/auth/register', postRequest);
+export function useLogin() {
+  const navigate = useNavigate();
+  const { data, trigger } = useSWRMutation('/user/auth/login', postRequest);
 
   const [formData, setFormData] = React.useState({
-    name: '',
     email: '',
     password: '',
   });
 
   const [errors, setErrors] = React.useState({
-    name: '',
     email: '',
     password: '',
   });
@@ -38,29 +28,20 @@ export default function useRegisterState() {
     }));
   };
 
-  const handleNameChange = (e) => {
-    handleDataChange({ key: 'name', value: e.target.value });
+  const handlePasswordChange = (e) => {
+    handleDataChange({ key: 'password', value: e.target.value });
   };
 
   const handleEmailChange = (e) => {
     handleDataChange({ key: 'email', value: e.target.value });
   };
 
-  const handlePasswordChange = (e) => {
-    handleDataChange({ key: 'password', value: e.target.value });
-  };
+  const handleLogin = async () => {
+    const { email, password } = formData;
 
-  const handleRegister = async () => {
-    const { name, email, password } = formData;
     try {
       //validation
-      if (!name || !email || !password) {
-        // Validate if fields are empty
-        !name &&
-          setErrors((data) => ({
-            ...data,
-            name: 'Name is required',
-          }));
+      if (!email || !password) {
         !email &&
           setErrors((data) => ({
             ...data,
@@ -74,24 +55,29 @@ export default function useRegisterState() {
         return;
       }
       if (!validateEmail(email)) {
-        setErrors((data) => ({
-          ...data,
-          email: 'Please enter a valid email',
-        }));
+        !email &&
+          setErrors((data) => ({
+            ...data,
+            email: 'Please enter a valid email',
+          }));
         return;
       }
       // trigger to registration
       const res = await trigger({
-        first_name: name,
         email: email,
         password: password,
       });
       // save token to local storage
-      localStorage.setItem('token', res.headers['authorization']);
-      alert('register successfully');
-      // redirect to dashboard
-      // handle code here
+      if (res && res.data && res.data.data) {
+        const { token, _id: userId } = res.data.data;
+        localStorage.setItem('token', token);
+        localStorage.setItem('userid', userId);
+        alert('login successfully');
+        navigate('/dashboard');
+      }
     } catch (error) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('userid');
       setErrors((data) => ({
         ...data,
         email: error.response.data.error.message,
@@ -102,9 +88,8 @@ export default function useRegisterState() {
   return {
     formData,
     errors,
-    handleEmailChange,
-    handleNameChange,
     handlePasswordChange,
-    handleRegister,
+    handleEmailChange,
+    handleLogin,
   };
 }

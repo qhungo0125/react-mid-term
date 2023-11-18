@@ -10,20 +10,11 @@ import DrawerItems from './drawerItems';
 const drawerWidth = 300;
 
 function ResponsiveDrawer(props) {
-  const { setPage } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-
-  // const handleLogout = () => {
-  //   localStorage.clear();
-  // };
-
-  // const changeTag = (index) => {
-  //   setPage(index);
-  // };
 
   return (
     <Box sx={{ display: 'flex' }}>
