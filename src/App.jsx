@@ -1,16 +1,23 @@
 import React from 'react';
-import { createBrowserRouter, Link, RouterProvider } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  Link,
+  RouterProvider,
+  useRouteError,
+} from 'react-router-dom';
 // import { Container } from '@mui/material';
 import './App.css';
 import Login from './containers/Login/index';
 import Register from './containers/Register/index';
 import Page from './containers/index';
+import NotFound from './components/NotFound';
 
 const router = createBrowserRouter([
   { path: '/login', Component: () => <Login /> },
   { path: '/register', Component: () => <Register /> },
   { path: '/', Component: Home },
   { path: '/dashboard', Component: () => <Page /> },
+  { path: '*', Component: () => <NotFound /> },
 ]);
 
 function Home() {

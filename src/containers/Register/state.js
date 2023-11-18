@@ -92,6 +92,7 @@ export default function useRegisterState() {
       // redirect to dashboard
       // handle code here
     } catch (error) {
+      localStorage.removeItem('token');
       setErrors((data) => ({
         ...data,
         email: error.response.data.error.message,

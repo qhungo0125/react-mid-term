@@ -65,12 +65,19 @@ export function useLogin() {
         email: email,
         password: password,
       });
+      console.log('res ', res);
       // save token to local storage
-      localStorage.setItem('token', res.headers['authorization']);
-      alert('login successfully');
-      // redirect to dashboard
-      // handle code here
+      if (res && res.data) {
+        // @todo
+        // update api response and remove this hardcode
+        const { data: token, userId = '655844e5208af61b667793b9' } = res.data;
+        localStorage.setItem('token', token);
+        localStorage.setItem('userid', userId);
+        alert('login successfully');
+      }
     } catch (error) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('userid');
       setErrors((data) => ({
         ...data,
         email: error.response.data.error.message,

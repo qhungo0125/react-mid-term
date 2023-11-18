@@ -33,21 +33,25 @@ import {
 import { formatPhoneNumber } from '../../utils/format';
 import axios from 'axios';
 import useSWR from 'swr';
-
-const ACCESS_TOKEN = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NTVlYzdhMjAxMDlhNDgzMTllNjViZSIsImVtYWlsIjoic29uZ29oYW5AZ21haWwuY29tIiwiaWF0IjoxNzAwMTYyMTc2LCJleHAiOjE3MDAxNjMwNzZ9.ic707y1Z3-bim9F573odF-UEaTDDiDKhV6om_-DSHNg`;
+import { useLocalStorage } from '../../hooks/userId';
 
 const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 export const DashBoard = () => {
-  const user_id = '6555ec7a20109a48319e65be';
+  const { token: ACCESS_TOKEN, userId: user_id } = useLocalStorage();
+
   const { data } = useSWR(
     `https://react-mid-term.onrender.com/api/user/${user_id}`,
     fetcher,
     { refreshInterval: 0 },
   );
 
-  const info = data ? data.data : null;
+  if (!data) {
+    return null;
+  }
+
+  const info = data.data;
   const {
     first_name: firstName,
     last_name: lastName,
