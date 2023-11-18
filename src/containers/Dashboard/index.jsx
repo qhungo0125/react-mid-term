@@ -43,14 +43,14 @@ export const DashBoard = () => {
   const navigate = useNavigate();
 
   //info fields
-  const [firstName, setFirstName] = React.useState();
-  const [lastName, setLastName] = React.useState();
-  const [region, setRegion] = React.useState();
-  const [phone, setPhone] = React.useState();
-  const [email, setEmail] = React.useState();
-  const [pass, setPass] = React.useState();
-  const [gender, setGender] = React.useState();
-  const [dob, setDOB] = React.useState();
+  const [firstName, setFirstName] = React.useState('');
+  const [lastName, setLastName] = React.useState('');
+  const [region, setRegion] = React.useState('');
+  const [phone, setPhone] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [pass, setPass] = React.useState('');
+  const [gender, setGender] = React.useState('');
+  const [dob, setDOB] = React.useState('');
 
   //fetch data
   React.useEffect(() => {
