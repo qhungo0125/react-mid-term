@@ -96,7 +96,7 @@ function Register() {
           >
             Already have an account? &nbsp;
             <Link
-              href="/login"
+              to="/login"
               color="#000000"
               fontSize={'10px'}
               fontWeight={'500'}
