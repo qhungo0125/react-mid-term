@@ -24,8 +24,10 @@ const style = {
 
 function AvatarModal({ open, closeModel, setNewAvatarFile, currentAvatar }) {
     const [avatar, setAvatar] = useState({ preview: currentAvatar })
-  
-    console.log(currentAvatar)
+
+    useEffect(() => {
+        setAvatar({ preview: currentAvatar });
+    }, [currentAvatar]);
 
     useEffect(() => {
         return () => {
@@ -78,7 +80,6 @@ function AvatarModal({ open, closeModel, setNewAvatarFile, currentAvatar }) {
                     <img
                         src={avatar.preview}
                         style={{ borderRadius: '10px', maxHeight: '300px', maxWidth: '300px' }}
-
                     />
                     <div>
                         <Button size='small' variant="outlined">
