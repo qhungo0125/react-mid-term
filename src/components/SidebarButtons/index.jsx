@@ -14,14 +14,20 @@ const SidebarButtons = () => {
   return (
     <>
       <Box>
-        {['Personal account'].map((text) => (
+        {['home', 'personal account'].map((text) => (
           <Button
             fullWidth
             variant="contained"
             key={text}
-            // onClick={() => changeTag(index)}
+            onClick={() => {
+              if (text === 'home') {
+                navigate('/');
+                return;
+              }
+            }}
             sx={{
               borderRadius: 4,
+              marginBottom: 1,
             }}
           >
             <ListItem disablePadding>
