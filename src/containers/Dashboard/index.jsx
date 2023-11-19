@@ -17,26 +17,29 @@ import {
   InputAdornment,
   InputLabel,
   MenuItem,
+  Modal,
   Radio,
   RadioGroup,
   Select,
   TextField,
   Typography,
 } from '@mui/material';
-import ResponsiveDrawer from '../../components/Drawer';
 import {
+  Edit,
   Image,
   Label,
   Padding,
   Visibility,
   VisibilityOff,
 } from '@mui/icons-material';
+import ResponsiveDrawer from '../../components/Drawer';
 import { formatPhoneNumber } from '../../utils/format';
 import { useNavigate } from 'react-router-dom';
 import axios from '../../utils/axiosConfig';
 import Loader from "../../components/Loader"
+import AvatarModal from './AvatarModal';
 
-const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+const DEFAULT_AVATAR = "https://statusneo.com/wp-content/uploads/2023/02/MicrosoftTeams-image551ad57e01403f080a9df51975ac40b6efba82553c323a742b42b1c71c1e45f1.jpg"
 
 export const DashBoard = () => {
   const [isLoading, setLoading] = React.useState(true);
@@ -51,6 +54,10 @@ export const DashBoard = () => {
   const [pass, setPass] = React.useState('');
   const [gender, setGender] = React.useState('');
   const [dob, setDOB] = React.useState('');
+  const [currentAvatar, setCurrentAvatar] = React.useState('')
+  const [newAvatarFile, setNewAvatarFile] = React.useState(null)
+
+  const [openAvatarModal, setOpenAvatarModal] = React.useState(false)
 
   //fetch data
   React.useEffect(() => {
@@ -67,6 +74,7 @@ export const DashBoard = () => {
           email,
           password,
           sex,
+          avatar,
           DOB,
         } = responseData.data.data;
 
@@ -77,6 +85,7 @@ export const DashBoard = () => {
         setEmail(email);
         setPass(password);
         setGender(sex);
+        setCurrentAvatar((avatar ? avatar : DEFAULT_AVATAR));
         setDOB(DOB);
 
         setLoading(false);
@@ -99,35 +108,28 @@ export const DashBoard = () => {
     setShowPassword(!showPassword);
   };
 
-  console.log(isLoading)
-
-  //handle loading
-  // if (isLoading) {
-  //   return (
-  //     <Box sx={{ backgroundColor: 'black', zIndex: '5', position:'fixed' }}>
-  //       <Loader />
-  //     </Box>
-  //   )
-  // }
-
   //save changes
   const handleSaveChanges = () => {
     setLoading(true)
+
+    //FormData
+    const formData = new FormData();
+    formData.append(`avatar`, newAvatarFile);
+    formData.append('first_name', firstName);
+    formData.append('last_name', lastName);
+    formData.append('email', email);
+    formData.append('sex', gender);
+    formData.append('telephone', phone);
+    formData.append('DOB', dob);
+    formData.append('region', region);
+
     axios({
       method: 'put',
       url: `https://react-mid-term.onrender.com/api/user/update`,
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
-      data: {
-        first_name: firstName,
-        last_name: lastName,
-        email: email,
-        sex: gender,
-        telephone: phone,
-        DOB: dob,
-        region: region,
-      },
+      data: formData,
     }).then(
       (respone) => {
         console.log(respone);
@@ -142,19 +144,45 @@ export const DashBoard = () => {
     );
   };
 
+  const handleEditAvatar = () => {
+    setOpenAvatarModal(true)
+  }
+
+  console.log(currentAvatar)
+
   return (
     <Grid width={'100%'} container spacing={2} sx={{ mt: 2 }}>
-      <Loader open={isLoading}/>
+      <Loader open={isLoading} />
       <Grid container alignItems="center" justifyContent="center">
-        <Grid item xs={12} textAlign={'center'}>
+        <Grid item textAlign={'center'} sx={{ position: 'relative' }}>
           <img
-            srcSet="https://statusneo.com/wp-content/uploads/2023/02/MicrosoftTeams-image551ad57e01403f080a9df51975ac40b6efba82553c323a742b42b1c71c1e45f1.jpg"
-            src="https://statusneo.com/wp-content/uploads/2023/02/MicrosoftTeams-image551ad57e01403f080a9df51975ac40b6efba82553c323a742b42b1c71c1e45f1.jpg"
+            // srcSet="https://statusneo.com/wp-content/uploads/2023/02/MicrosoftTeams-image551ad57e01403f080a9df51975ac40b6efba82553c323a742b42b1c71c1e45f1.jpg"
+            // src="https://statusneo.com/wp-content/uploads/2023/02/MicrosoftTeams-image551ad57e01403f080a9df51975ac40b6efba82553c323a742b42b1c71c1e45f1.jpg"
+            src={newAvatarFile ? newAvatarFile.preview : currentAvatar}
             height={200}
             style={{ borderRadius: '50%' }}
-          />
+          ></img>
+          <IconButton
+            style={{ background: '#fff' }}
+            sx={{
+              position: 'absolute',
+              top: '10px',
+              right: '10px',
+              fontSize: '20px'
+            }}
+            onClick={handleEditAvatar}
+          >
+            <Edit fontSize="inherit" />
+          </IconButton >
         </Grid>
       </Grid>
+
+      <AvatarModal
+        open={openAvatarModal}
+        closeModel={() => setOpenAvatarModal(false)}
+        setNewAvatarFile={(new_avatar_file) => { setNewAvatarFile(new_avatar_file) }}
+        currentAvatar={currentAvatar}
+      />
 
       <Grid item xs={12} sm={12} md={6}>
         <TextField
@@ -269,7 +297,7 @@ export const DashBoard = () => {
           Save Changes
         </Button>
       </Grid>
-      
+
     </Grid>
   );
 };
