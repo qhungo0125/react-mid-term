@@ -73,7 +73,7 @@ function Login() {
             {passwordError}
           </span>
           <div style={{ textAlign: 'right' }}>
-            <Link href="#" color="inherit" sx={{ fontSize: '10px' }}>
+            <Link href="/" color="inherit" sx={{ fontSize: '10px' }}>
               Forgot Password?
             </Link>
           </div>
@@ -89,7 +89,12 @@ function Login() {
             }}
           >
             Don't have an account? &nbsp;
-            <Link href="#" color="#187b87" fontSize={'10px'} fontWeight={'500'}>
+            <Link
+              href="/register"
+              color="#187b87"
+              fontSize={'10px'}
+              fontWeight={'500'}
+            >
               Sign up
             </Link>
           </div>

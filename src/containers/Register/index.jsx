@@ -94,7 +94,12 @@ function Register() {
             }}
           >
             Already have an account? &nbsp;
-            <Link href="#" color="#000000" fontSize={'10px'} fontWeight={'500'}>
+            <Link
+              href="/login"
+              color="#000000"
+              fontSize={'10px'}
+              fontWeight={'500'}
+            >
               Log in
             </Link>
           </div>
